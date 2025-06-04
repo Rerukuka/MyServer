@@ -1,0 +1,46 @@
+const fs = require("fs");
+const path = require("path");
+const express = require("express");
+const bodyParser = require("body-parser");
+const app = express();
+const PORT = 3000;
+
+const USERS_FILE = path.join(__dirname, "users.txt");
+
+app.use(bodyParser.json());
+app.use(express.static(__dirname));
+
+// РЕГИСТРАЦИЯ
+app.post("/register", (req, res) => {
+  const { username, email, password, wallet } = req.body;
+  if (!username || !email || !password || !wallet) return res.status(400).send("Все поля обязательны");
+
+  const entry = `${username};${email};${password};${wallet}\n`;
+  fs.appendFileSync(USERS_FILE, entry, "utf8");
+  res.status(200).send("Регистрация успешна");
+});
+
+// ВХОД
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  const users = fs.readFileSync(USERS_FILE, "utf8").split("\n");
+
+  const found = users.find(line => {
+    const [_, userEmail, userPass] = line.split(";");
+    return userEmail === email && userPass === password;
+  });
+
+  if (found) res.status(200).send("Вход успешен");
+  else res.status(401).send("Неверный логин или пароль");
+});
+
+// ОБНОВЛЕНИЕ BTC-КОШЕЛЬКА
+app.post("/update-wallet", (req, res) => {
+  const { updated } = req.body;
+  fs.writeFileSync(USERS_FILE, updated.trim() + "\n", "utf8");
+  res.status(200).send("Кошелёк обновлён");
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Сервер на http://localhost:${PORT}`);
+});

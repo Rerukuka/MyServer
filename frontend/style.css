@@ -1,0 +1,74 @@
+:root {
+  --bg-light: #f7fafc;
+  --bg-dark: #1a202c;
+  --text-light: #1a202c;
+  --text-dark: #f7fafc;
+  --nav-bg-light: #ffffff;
+  --nav-bg-dark: #2d3748;
+  --accent-light: #3b82f6;
+  --accent-dark: #60a5fa;
+}
+
+html[data-theme="light"] {
+  --bg-color: var(--bg-light);
+  --text-color: var(--text-light);
+  --nav-bg: var(--nav-bg-light);
+  --accent-color: var(--accent-light);
+}
+
+html[data-theme="dark"] {
+  --bg-color: var(--bg-dark);
+  --text-color: var(--text-dark);
+  --nav-bg: var(--nav-bg-dark);
+  --accent-color: var(--accent-dark);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+nav {
+  background-color: var(--nav-bg);
+  transition: background-color 0.3s;
+}
+
+.nav-brand {
+  font-weight: bold;
+}
+
+.btn-nav {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+.btn-nav:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.btn-nav.active {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.btn-primary {
+  display: inline-block;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 0.375rem;
+  transition: all 0.3s ease;
+}
+
+input, textarea, select {
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.container {
+  transition: background-color 0.3s, color 0.3s;
+}

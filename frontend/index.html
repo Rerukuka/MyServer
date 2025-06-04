@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="home-title">Главная - BtcAIworK</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-all duration-300">
+  <nav class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex flex-col leading-tight">
+  <a href="index.html" class="text-2xl font-bold text-blue-600 dark:text-blue-400" data-i18n="site-name">BtcAIworK</a>
+  <span id="btc-wallet-display" class="text-xs text-gray-500 dark:text-gray-300"></span>
+</div>
+
+        <div class="nav-links flex items-center space-x-4">
+          <a href="index.html" class="btn-nav active">Главная</a>
+          <a href="dashboard.html" class="btn-nav">Статистика</a>
+          <a href="Roadmap.html" class="btn-nav">Дорожная карта</a>
+          <a href="Connection.html" class="btn-nav">Контакты</a>
+          <a href="Profile.html" id="profile-link" class="btn-nav hidden" data-i18n="nav-profile">Аккаунт</a>
+          <a href="Login.html" id="login-link" class="btn-nav" data-i18n="nav-login">Вход</a>
+          <button id="theme-toggle" class="btn-nav">🌙</button>
+          <button id="lang-btn" class="btn-nav">RU</button>
+        </div>  
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto px-4 py-12">
+    <div class="container bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+      <h2 class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-6" data-i18n="home-welcome">Добро пожаловать в BtcAIworK!</h2>
+      <p class="mb-4" data-i18n="intro-line">— когда Биткойн работает на тебя с силой искусственного интеллекта</p>
+      <p class="mb-4" data-i18n="mining-concept">Представь майнинг, где не ты ищешь блок — а искусственный интеллект находит его за тебя.</p>
+      <p class="mb-4" data-i18n="ecosystem-desc">— это не просто соло-майнинг. Это умная экосистема, которая зарабатывает быстрее, точнее и выгоднее, чем обычные пулы.</p>
+      <p class="mb-4" data-i18n="ai-prediction">Наш ИИ в реальном времени предсказывает наилучшие диапазоны Nonce — и направляет твоего майнера сразу туда, где больше шансов найти блок. Это значит:</p>
+      <p class="mb-4 font-semibold" data-i18n="ai-benefit">Меньше времени — больше наград.</p>
+      <h3 class="text-2xl font-semibold mb-4" data-i18n="why-choose">Почему выбирают BtcAIworK?</h3>
+      <ul class="list-disc pl-6 mb-6">
+        <li><span data-i18n="feature-ai-acceleration">AI-ускорение добычи</span>: <span data-i18n="feature-ai-desc">Модель самообучается на динамике сети Биткойн.</span></li>
+        <li><span data-i18n="feature-solo-mining">Честный соло-майнинг</span>: <span data-i18n="feature-solo-desc">Ты находишь блок — ты получаешь награду.</span></li>
+        <li><span data-i18n="feature-browser-mining">Браузерный майнинг и DePIN</span>: <span data-i18n="feature-browser-desc">Зарабатывай даже без ASIC — с обычного ПК или участвуя в децентрализованной инфраструктуре.</span></li>
+        <li><span data-i18n="feature-payouts-analytics">Автоматические выплаты и мощная аналитика</span>: <span data-i18n="feature-payouts-desc">Всё под контролем, всё в реальном времени.</span></li>
+        <li><span data-i18n="feature-investment">Возможность инвестировать в рост</span>: <span data-i18n="feature-investment-desc">Выпуск токенов, сжигание, управление через DAO — будь не просто участником, будь совладельцем будущего.</span></li>
+      </ul>
+      <p class="mb-4" data-i18n="new-gen-mining">— это твой шанс зайти в соло-майнинг на старте нового поколения.</p>
+      <p class="mb-4" data-i18n="no-middlemen">Здесь нет посредников. Нет скрытых комиссий. Только ты, твой майнер и умный AI, который работает на твой доход 24/7.</p>
+      <p class="mb-6 font-semibold" data-i18n="ready-to-earn">Готов получать больше от Биткойна?</p>
+      <a href="Register.html" class="btn-primary bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold px-6 py-3 rounded-md hover:from-blue-600 hover:to-blue-800 transition" data-i18n="home-get-started">Начать сейчас</a>
+    </div>
+  </main>
+
+  <footer class="bg-white dark:bg-gray-800 py-6 shadow-inner">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-center" data-i18n="footer-text">© 2025 BtcAIworK. Все права защищены.</p>
+    </div>
+  </footer>
+
+  <script src="i18n.js"></script>
+<script type="module" src="script.js"></script>
+</body>
+</html>
