@@ -168,3 +168,30 @@ logoutBtn?.addEventListener("click", () => {
   alert("Вы вышли из аккаунта");
   window.location.href = "index.html";
 });
+
+
+// 📊 Загрузка данных из Bitcoin-ноды на главную страницу
+async function loadBitcoinStats() {
+  const statsBlock = document.getElementById("btc-stats");
+  const elBlocks = document.getElementById("btc-blocks");
+  const elDifficulty = document.getElementById("btc-difficulty");
+  const elHashrate = document.getElementById("btc-hashrate");
+
+  if (!statsBlock || !elBlocks || !elDifficulty || !elHashrate) return;
+
+  try {
+    const res = await fetch("/api/bitcoin-status");
+    const stats = await res.json();
+
+    elBlocks.textContent = `Блоков: ${stats.blocks}`;
+    elDifficulty.textContent = `Сложность: ${stats.difficulty}`;
+    elHashrate.textContent = `Хешрейт: ${Math.round(stats.networkhashps / 1e9)} GH/s`;
+  } catch (err) {
+    console.error("❌ Ошибка получения статуса Bitcoin:", err);
+    elBlocks.textContent = "Ошибка загрузки";
+    elDifficulty.textContent = "";
+    elHashrate.textContent = "";
+  }
+}
+
+window.addEventListener("DOMContentLoaded", loadBitcoinStats);
