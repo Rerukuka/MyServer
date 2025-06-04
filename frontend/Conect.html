@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="nav-roadmap">Дорожная карта - BtcAIworK</title>
+  <title data-i18n="contact-title">Контакты - BtcAIworK</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -12,16 +12,16 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <div class="flex flex-col leading-tight">
-            <a href="index.html" class="text-2xl font-bold text-blue-600 dark:text-blue-400" data-i18n="site-name">BtcAIworK</a>
-            <span id="btc-wallet-display" class="text-xs text-gray-500 dark:text-gray-300"></span>
+          <a href="index.html" class="text-2xl font-bold text-blue-600 dark:text-blue-400" data-i18n="site-name">BtcAIworK</a>
+          <span id="btc-wallet-display" class="text-xs text-gray-500 dark:text-gray-300"></span>
         </div>
-        <div class="flex items-center space-x-4">
-          <a href="index.html" class="btn-nav" data-i18n="nav-index">Главная</a>
-          <a href="dashboard.html" class="btn-nav" data-i18n="nav-dashboard">Статистика</a>
-          <a href="Roadmap.html" class="btn-nav active" data-i18n="nav-roadmap">Дорожная карта</a>
-          <a href="Conect.html" class="btn-nav" data-i18n="nav-connection">Контакты</a>
-          <a href="Profile.html" id="profile-link" class="btn-nav hidden" data-i18n="nav-profile">Аккаунт</a>
-          <a href="Login.html" id="login-link" class="btn-nav" data-i18n="nav-login">Вход</a>
+        <div class="nav-links flex items-center space-x-4">
+          <a href="index.html" class="btn-nav">Главная</a>
+          <a href="dashboard.html" class="btn-nav">Статистика</a>
+          <a href="Roadmap.html" class="btn-nav">Дорожная карта</a>
+          <a href="Conect.html" class="btn-nav active">Контакты</a>
+          <a href="Profile.html" class="btn-nav hidden" id="profile-link">Аккаунт</a>
+          <a href="Login.html" class="btn-nav" id="login-link">Вход</a>
           <button id="theme-toggle" class="btn-nav">🌙</button>
           <button id="lang-btn" class="btn-nav">RU</button>
         </div>
@@ -29,34 +29,19 @@
     </div>
   </nav>
 
-  <main class="max-w-5xl mx-auto px-4 py-12">
-    <h2 class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-6" data-i18n="nav-roadmap">Дорожная карта</h2>
-    <div class="space-y-6">
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h3 class="text-xl font-semibold mb-2">Q1 2025</h3>
-        <ul class="list-disc pl-6">
-          <li data-i18n="roadmap-q1-item1">Запуск MVP платформы</li>
-          <li data-i18n="roadmap-q1-item2">Базовая безопасность аккаунтов</li>
-        </ul>
-      </div>
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h3 class="text-xl font-semibold mb-2">Q2 2025</h3>
-        <ul class="list-disc pl-6">
-          <li data-i18n="roadmap-q2-item1">Подключение аналитики майнинга</li>
-          <li data-i18n="roadmap-q2-item2">Мобильная адаптация интерфейса</li>
-        </ul>
-      </div>
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h3 class="text-xl font-semibold mb-2">Q3 2025</h3>
-        <ul class="list-disc pl-6">
-          <li data-i18n="roadmap-q3-item1">Интеграция мульти-языковой поддержки</li>
-          <li data-i18n="roadmap-q3-item2">Интеграция BTC кошельков и вывода</li>
-        </ul>
-      </div>
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+      <h2 class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-6" data-i18n="contact-header">Свяжитесь с нами</h2>
+      <p class="mb-4" data-i18n="contact-description">У вас есть вопросы, предложения или проблемы? Мы всегда рады обратной связи!</p>
+      <ul class="space-y-2">
+        <li data-i18n="contact-email">📧 Email: <a href="mailto:support@btcaiwork.com" class="text-blue-500">support@btcaiwork.com</a></li>
+        <li data-i18n="contact-telegram">💬 Telegram: <a href="https://t.me/btcaiwork" target="_blank" class="text-blue-500">@btcaiwork</a></li>
+        <li data-i18n="contact-github">🐙 GitHub: <a href="https://github.com/Rerukuka/MyServer" target="_blank" class="text-blue-500">Наш проект</a></li>
+      </ul>
     </div>
   </main>
 
-  <footer class="bg-white dark:bg-gray-800 py-6 shadow-inner">
+  <footer class="bg-white dark:bg-gray-800 py-6 shadow-inner mt-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="text-center" data-i18n="footer-text">© 2025 BtcAIworK. Все права защищены.</p>
     </div>
