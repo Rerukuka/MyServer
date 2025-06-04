@@ -195,3 +195,35 @@ async function loadBitcoinStats() {
 }
 
 window.addEventListener("DOMContentLoaded", loadBitcoinStats);
+
+
+async function fetchBlockchainInfo() {
+  try {
+    const response = await fetch('/rpc', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jsonrpc: '1.0',
+        id: 'getblockchaininfo',
+        method: 'getblockchaininfo',
+        params: [],
+      }),
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      console.error('RPC Error:', data.error);
+      return;
+    }
+
+    const info = data.result;
+    document.getElementById('block-height').textContent = info.blocks;
+    document.getElementById('difficulty').textContent = info.difficulty;
+    document.getElementById('chain').textContent = info.chain;
+    // Добавьте другие поля по необходимости
+  } catch (error) {
+    console.error('Fetch Error:', error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', fetchBlockchainInfo);
