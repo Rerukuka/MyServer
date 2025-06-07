@@ -66,6 +66,13 @@ app.get("/api/bitcoin-status", async (req, res) => {
   }
 });
 
+const stratumPool = require('/opt/node-stratum-pool/pool-launch.js');
+
+app.get('/asic-status', (req, res) => {
+  const workers = stratumPool.getConnectedWorkers();
+  res.json({ workers });
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Сервер на http://localhost:${PORT}`);
 });
