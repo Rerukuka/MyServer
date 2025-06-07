@@ -52,12 +52,12 @@ window.addEventListener("DOMContentLoaded", () => {
   const loginLink = document.getElementById("login-link");
   const profileLink = document.getElementById("profile-link");
   const walletSpan = document.getElementById("btc-wallet-display");
+  const asicStatusBlock = document.getElementById("asic-status");
 
   if (email) {
     loginLink?.remove();
     profileLink?.classList.remove("hidden");
 
-    // Отображение BTC кошелька
     fetch("users.txt")
       .then(res => res.text())
       .then(data => {
@@ -65,6 +65,20 @@ window.addEventListener("DOMContentLoaded", () => {
         if (userLine && walletSpan) {
           const wallet = userLine.split(";")[3] || "";
           walletSpan.textContent = wallet ? wallet : "Введите кошелек биткоина";
+
+          // 🔍 Проверка ASIC
+          if (asicStatusBlock && wallet) {
+            fetch(`/asic-status?wallet=${wallet}`)
+              .then(res => res.json())
+              .then(status => {
+                asicStatusBlock.textContent = status.status === "connected"
+                  ? "✅ ASIC подключён"
+                  : "❌ ASIC не обнаружен";
+              })
+              .catch(() => {
+                asicStatusBlock.textContent = "⚠️ Ошибка соединения с сервером";
+              });
+          }
         }
       });
   } else {
