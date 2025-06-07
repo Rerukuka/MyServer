@@ -41,6 +41,30 @@ app.post("/update-wallet", (req, res) => {
   res.status(200).send("Кошелёк обновлён");
 });
 
+const fetch = require("node-fetch");
+
+app.get("/api/bitcoin-status", async (req, res) => {
+  try {
+    const response = await fetch("http://localhost:3001", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        jsonrpc: "1.0",
+        id: "getblockchaininfo",
+        method: "getblockchaininfo",
+        params: [],
+      }),
+    });
+
+    const data = await response.json();
+    if (data.error) return res.status(500).json({ error: data.error });
+
+    res.json(data.result);
+  } catch (err) {
+    res.status(500).json({ error: "Ошибка запроса к RPC-прокси" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Сервер на http://localhost:${PORT}`);
 });
