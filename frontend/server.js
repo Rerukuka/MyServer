@@ -41,7 +41,8 @@ app.post("/update-wallet", (req, res) => {
   res.status(200).send("Кошелёк обновлён");
 });
 
-const fetch = require("node-fetch");
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
 
 app.get("/api/bitcoin-status", async (req, res) => {
   try {
