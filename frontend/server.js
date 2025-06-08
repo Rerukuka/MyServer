@@ -83,11 +83,27 @@ app.get("/api/mempool", async (req, res) => {
 
 app.get("/api/asic-status", async (req, res) => {
   try {
+    const email = req.query.email;
+    if (!email) return res.json({ connected: false });
+
+    // Найдем пользователя по email
+    const users = fs.readFileSync(USERS_FILE, "utf8").split("\n");
+    const found = users.find(line => line.includes(email));
+    if (!found) return res.json({ connected: false });
+
+    const [username, userEmail, password, wallet] = found.split(";");
+
+    // Получаем статус ASIC (и кошелек, к которому сейчас подключён ASIC)
     const response = await fetch("http://127.0.0.1:5050/asic-status");
-    const data = await response.json();
-    res.json(data);
+    const asic = await response.json();
+
+    // ASIC подключен именно к этому пользователю (по кошельку)
+    if (asic.connected && asic.connectedWallet === wallet) {
+      return res.json({ connected: true });
+    }
+    return res.json({ connected: false });
   } catch (err) {
-    res.status(500).json({ connected: false, error: "Не удалось получить статус ASIC" });
+    return res.json({ connected: false });
   }
 });
 

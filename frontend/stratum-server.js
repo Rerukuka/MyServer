@@ -68,9 +68,10 @@ server.on("error", (err) => {
 const statusServer = http.createServer((req, res) => {
   if (req.url === "/asic-status") {
     res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ connected: !!connectedWallet }));
+    res.end(JSON.stringify({ connected: !!connectedWallet, connectedWallet }));
   }
 });
+
 statusServer.listen(5050, () => {
   console.log("🌐 HTTP статус сервер слушает порт 5050");
 });

@@ -200,8 +200,10 @@ window.addEventListener("DOMContentLoaded", loadBitcoinStats);
 
 
 async function checkAsicConnection() {
+  const email = localStorage.getItem("user-email");
+  if (!email) return;
   try {
-    const res = await fetch("/api/asic-status");
+    const res = await fetch(`/api/asic-status?email=${encodeURIComponent(email)}`);
     const data = await res.json();
     const el = document.getElementById("asic-status");
     if (data.connected) {
@@ -214,9 +216,16 @@ async function checkAsicConnection() {
       el.classList.add("text-red-500");
     }
   } catch (err) {
-    console.error("Ошибка проверки ASIC:", err);
+    // Не ругаемся в консоль, просто обновляем статус
+    const el = document.getElementById("asic-status");
+    if (el) {
+      el.textContent = "ASIC не подключен ❌";
+      el.classList.remove("text-green-500");
+      el.classList.add("text-red-500");
+    }
   }
 }
+
 
 setInterval(checkAsicConnection, 5000); // обновление каждые 5 секунд
 window.addEventListener("DOMContentLoaded", checkAsicConnection);
