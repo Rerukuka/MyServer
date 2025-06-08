@@ -250,3 +250,24 @@ async function checkAsicConnection() {
 
 setInterval(checkAsicConnection, 5000); // обновление каждые 5 секунд
 window.addEventListener("DOMContentLoaded", checkAsicConnection);
+
+async function loadDashboardStats() {
+  try {
+    const res1 = await fetch("/api/mempool");
+    const mempool = await res1.json();
+    const res2 = await fetch("/api/user-count");
+    const users = await res2.json();
+
+    const priceEl = document.getElementById("btc-price");
+    const txEl = document.getElementById("tx-today");
+    const usersEl = document.getElementById("active-users");
+
+    if (priceEl) priceEl.textContent = `$≈ ${mempool.price || "?"}`;
+    if (txEl) txEl.textContent = mempool.txCount.toLocaleString("ru-RU");
+    if (usersEl) usersEl.textContent = users.count.toLocaleString("ru-RU");
+  } catch (err) {
+    console.error("Ошибка загрузки дашборда:", err);
+  }
+}
+
+window.addEventListener("DOMContentLoaded", loadDashboardStats);

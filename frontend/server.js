@@ -60,6 +60,39 @@ app.get("/api/bitcoin-status", async (req, res) => {
   }
 });
 
+const https = require("https");
+
+app.get("/api/mempool", async (req, res) => {
+  try {
+    const response = await fetch("https://mempool.space/api/v1/fees/recommended");
+    const mempoolData = await response.json();
+
+    const txResponse = await fetch("https://mempool.space/api/mempool");
+    const txData = await txResponse.json();
+
+    res.json({
+      price: "Получить цену BTC из другого API можно при необходимости",
+      txCount: txData.count || 0
+    });
+  } catch (err) {
+    console.error("Ошибка при получении данных из mempool:", err.message);
+    res.status(500).json({ error: "Ошибка API mempool" });
+  }
+});
+
+app.get("/api/user-count", (req, res) => {
+  try {
+    const content = fs.readFileSync(USERS_FILE, "utf8").trim();
+    const count = content ? content.split("\n").length : 0;
+    res.json({ count });
+  } catch (err) {
+    console.error("Ошибка чтения users.txt:", err.message);
+    res.status(500).json({ error: "Ошибка users.txt" });
+  }
+});
+
+
 app.listen(PORT, () => {
   console.log(`🚀 Сервер на http://localhost:${PORT}`);
 });
+
