@@ -65,20 +65,6 @@ window.addEventListener("DOMContentLoaded", () => {
         if (userLine && walletSpan) {
           const wallet = userLine.split(";")[3] || "";
           walletSpan.textContent = wallet ? wallet : "Введите кошелек биткоина";
-
-          // 🔍 Проверка ASIC
-          if (asicStatusBlock && wallet) {
-            fetch(`/asic-status?wallet=${wallet}`)
-              .then(res => res.json())
-              .then(status => {
-                asicStatusBlock.textContent = status.status === "connected"
-                  ? "✅ ASIC подключён"
-                  : "❌ ASIC не обнаружен";
-              })
-              .catch(() => {
-                asicStatusBlock.textContent = "⚠️ Ошибка соединения с сервером";
-              });
-          }
         }
       });
   } else {
@@ -209,22 +195,6 @@ async function loadBitcoinStats() {
 }
 
 window.addEventListener("DOMContentLoaded", loadBitcoinStats);
-
-async function checkAsicStatus() {
-  const res = await fetch("/asic-status");
-  const data = await res.json();
-  const div = document.getElementById("asic-status");
-
-  if (data.workers.length > 0) {
-    div.textContent = `✅ ASIC подключён: ${data.workers[0]}`;
-    div.classList.add("text-green-500");
-  } else {
-    div.textContent = "❌ Нет подключённых ASIC";
-    div.classList.add("text-red-500");
-  }
-}
-
-setInterval(checkAsicStatus, 5000);
 
 async function fetchBlockchainInfo() {
   try {

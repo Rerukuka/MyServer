@@ -46,22 +46,22 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 
 app.get("/api/bitcoin-status", async (req, res) => {
   try {
-    const response = await fetch("http://localhost:3001/rpc", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ jsonrpc: "1.0", id: "getblockchaininfo", method: "getblockchaininfo", params: [] })
-});
+    const response = await fetch("http://127.0.0.1:3001/rpc", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jsonrpc: "1.0", id: "getblockchaininfo", method: "getblockchaininfo", params: [] })
+    });
     const data = await response.json();
     if (data.error) return res.status(500).json({ error: data.error });
-
     res.json(data.result);
   } catch (err) {
+    console.error("RPC Proxy Error:", err.message);
     res.status(500).json({ error: "Ошибка запроса к RPC-прокси" });
   }
 });
 
 // ✅ ASIC Подключение
-const connectedAsics = {}; // wallet -> { ip, lastSeen }
+const connectedAsics = {};
 
 const asicServer = net.createServer((socket) => {
   const ip = socket.remoteAddress;
@@ -76,7 +76,7 @@ const asicServer = net.createServer((socket) => {
   });
 
   socket.on('error', (err) => {
-    console.error('ASIC socket error:', err);
+    console.error('ASIC socket error:', err.message);
   });
 });
 asicServer.listen(3333, () => {
