@@ -196,36 +196,30 @@ async function loadBitcoinStats() {
 
 window.addEventListener("DOMContentLoaded", loadBitcoinStats);
 
-async function fetchBlockchainInfo() {
+async function loadBitcoinStats() {
+  const statsBlock = document.getElementById("btc-stats");
+  const elBlocks = document.getElementById("btc-blocks");
+  const elDifficulty = document.getElementById("btc-difficulty");
+  const elHashrate = document.getElementById("btc-hashrate");
+
+  if (!statsBlock || !elBlocks || !elDifficulty || !elHashrate) return;
+
   try {
-    const response = await fetch('/rpc', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        jsonrpc: '1.0',
-        id: 'getblockchaininfo',
-        method: 'getblockchaininfo',
-        params: [],
-      }),
-    });
+    const res = await fetch("/api/bitcoin-status");
+    const stats = await res.json();
 
-    const data = await response.json();
-    if (data.error) {
-      console.error('RPC Error:', data.error);
-      return;
-    }
-
-    const info = data.result;
-    document.getElementById('block-height').textContent = info.blocks;
-    document.getElementById('difficulty').textContent = info.difficulty;
-    document.getElementById('chain').textContent = info.chain;
-    // Добавьте другие поля по необходимости
-  } catch (error) {
-    console.error('Fetch Error:', error);
+    elBlocks.textContent = `Блоков: ${stats.blocks}`;
+    elDifficulty.textContent = `Сложность: ${stats.difficulty}`;
+    elHashrate.textContent = `Хешрейт: ${Math.round(stats.networkhashps / 1e9)} GH/s`;
+  } catch (err) {
+    console.error("❌ Ошибка получения статуса Bitcoin:", err);
+    elBlocks.textContent = "Ошибка загрузки";
+    elDifficulty.textContent = "";
+    elHashrate.textContent = "";
   }
 }
+window.addEventListener("DOMContentLoaded", loadBitcoinStats);
 
-document.addEventListener('DOMContentLoaded', fetchBlockchainInfo);
 
 
 
