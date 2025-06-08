@@ -64,21 +64,23 @@ const https = require("https");
 
 app.get("/api/mempool", async (req, res) => {
   try {
-    const response = await fetch("https://mempool.space/api/v1/fees/recommended");
-    const mempoolData = await response.json();
+    const priceRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
+    const priceData = await priceRes.json();
+    const price = priceData.bitcoin.usd;
 
     const txResponse = await fetch("https://mempool.space/api/mempool");
     const txData = await txResponse.json();
 
     res.json({
-      price: "Получить цену BTC из другого API можно при необходимости",
+      price,
       txCount: txData.count || 0
     });
   } catch (err) {
-    console.error("Ошибка при получении данных из mempool:", err.message);
-    res.status(500).json({ error: "Ошибка API mempool" });
+    console.error("Ошибка API:", err.message);
+    res.status(500).json({ error: "Ошибка API mempool/price" });
   }
 });
+
 
 app.get("/api/user-count", (req, res) => {
   try {
