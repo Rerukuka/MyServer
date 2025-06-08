@@ -174,9 +174,9 @@ async function loadBitcoinStats() {
   const statsBlock = document.getElementById("btc-stats");
   const elBlocks = document.getElementById("btc-blocks");
   const elDifficulty = document.getElementById("btc-difficulty");
-  const elHashrate = document.getElementById("btc-hashrate");
+  // const elHashrate = document.getElementById("btc-hashrate"); // больше не нужен
 
-  if (!statsBlock || !elBlocks || !elDifficulty || !elHashrate) return;
+  if (!statsBlock || !elBlocks || !elDifficulty) return; // убрали проверку на elHashrate
 
   try {
     const res = await fetch("/api/bitcoin-status");
@@ -184,14 +184,16 @@ async function loadBitcoinStats() {
 
     elBlocks.textContent = `Блоков: ${stats.blocks}`;
     elDifficulty.textContent = `Сложность: ${stats.difficulty}`;
-    elHashrate.textContent = `Хешрейт: ${Math.round(stats.networkhashps / 1e9)} GH/s`;
+    // если все-таки решишь вернуть, просто раскомментируй ниже
+    // if (elHashrate) elHashrate.textContent = `Хешрейт: ${Math.round(stats.networkhashps / 1e9)} GH/s`;
   } catch (err) {
     console.error("❌ Ошибка получения статуса Bitcoin:", err);
     elBlocks.textContent = "Ошибка загрузки";
     elDifficulty.textContent = "";
-    elHashrate.textContent = "";
+    // if (elHashrate) elHashrate.textContent = "";
   }
 }
+
 window.addEventListener("DOMContentLoaded", loadBitcoinStats);
 
 
