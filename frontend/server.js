@@ -60,37 +60,6 @@ app.get("/api/bitcoin-status", async (req, res) => {
   }
 });
 
-// ✅ ASIC Подключение
-const connectedAsics = {};
-
-const asicServer = net.createServer((socket) => {
-  const ip = socket.remoteAddress;
-  socket.on('data', (data) => {
-    const message = data.toString().trim();
-    const [wallet, password] = message.split(";");
-    if (wallet) {
-      connectedAsics[wallet] = { ip, lastSeen: new Date() };
-      console.log(`ASIC подключён: Wallet=${wallet}, IP=${ip}`);
-    }
-    socket.end();
-  });
-
-  socket.on('error', (err) => {
-    console.error('ASIC socket error:', err.message);
-  });
-});
-asicServer.listen(3333, () => {
-  console.log('ASIC listener запущен на порту 3333');
-});
-
-// API: Статус ASIC по wallet
-app.get("/asic-status", (req, res) => {
-  const wallet = req.query.wallet;
-  const entry = connectedAsics[wallet];
-  const connected = entry && (new Date() - entry.lastSeen < 60000);
-  res.json({ status: connected ? "connected" : "disconnected" });
-});
-
 app.listen(PORT, () => {
   console.log(`🚀 Сервер на http://localhost:${PORT}`);
 });
