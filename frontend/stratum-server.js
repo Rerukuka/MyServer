@@ -1,18 +1,19 @@
 const net = require("net");
+const fs = require("fs");
 const http = require("http");
 
 const PORT = 3333;
-const RPC_HOST = "127.0.0.1";
-const RPC_PORT = 3001;
+const USERS_FILE = "/opt/MyServer/users.txt";
+
+let connectedWallet = null;
 
 const server = net.createServer((socket) => {
   console.log("🔌 ASIC подключился:", socket.remoteAddress);
 
   socket.on("data", (data) => {
-    console.log("📩 Получено от ASIC:", data.toString());
-
     try {
       const message = JSON.parse(data.toString());
+
       if (message.method === "mining.subscribe") {
         socket.write(JSON.stringify({
           id: message.id,
@@ -22,32 +23,54 @@ const server = net.createServer((socket) => {
       }
 
       if (message.method === "mining.authorize") {
-        socket.write(JSON.stringify({
-          id: message.id,
-          result: true,
-          error: null
-        }) + "\n");
+        const [userAndWorker, password] = message.params;
+        const wallet = password?.trim();
+
+        const userLines = fs.readFileSync(USERS_FILE, "utf8").split("\n");
+        const found = userLines.find(line => {
+          const fields = line.trim().split(";");
+          return fields.length >= 4 && fields[2] === password && fields[3] === wallet;
+        });
+
+        if (found) {
+          connectedWallet = wallet;
+          console.log(`✅ ASIC авторизован: ${userAndWorker}, Wallet: ${wallet}`);
+          socket.write(JSON.stringify({ id: message.id, result: true, error: null }) + "\n");
+        } else {
+          socket.write(JSON.stringify({ id: message.id, result: false, error: "Auth failed" }) + "\n");
+        }
       }
 
       if (message.method === "mining.submit") {
-        console.log("🧱 Хеш от ASIC:", JSON.stringify(message.params));
+        console.log("🧱 ASIC прислал решение:", JSON.stringify(message.params));
         socket.write(JSON.stringify({ id: message.id, result: true, error: null }) + "\n");
       }
     } catch (e) {
-      console.error("❌ Ошибка обработки:", e.message);
+      console.error("❌ Ошибка ASIC:", e.message);
     }
   });
 
   socket.on("end", () => {
     console.log("🔌 Отключение ASIC");
+    connectedWallet = null;
   });
 });
 
 server.listen(PORT, () => {
-  console.log(`✅ Stratum-сервер запущен и слушает порт ${PORT}`);
-  console.log("🔁 Статус сервера: готов к подключению ASIC");
+  console.log(`✅ Stratum-сервер слушает порт ${PORT}`);
 });
 
 server.on("error", (err) => {
-  console.error(`❌ Ошибка при запуске сервера: ${err.message}`);
+  console.error(`❌ Ошибка сервера: ${err.message}`);
+});
+
+// API статус ASIC
+const statusServer = http.createServer((req, res) => {
+  if (req.url === "/asic-status") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ connected: !!connectedWallet }));
+  }
+});
+statusServer.listen(5050, () => {
+  console.log("🌐 HTTP статус сервер слушает порт 5050");
 });
