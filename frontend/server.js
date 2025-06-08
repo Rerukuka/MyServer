@@ -46,17 +46,11 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 
 app.get("/api/bitcoin-status", async (req, res) => {
   try {
-    const response = await fetch("http://localhost:3001", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        jsonrpc: "1.0",
-        id: "getblockchaininfo",
-        method: "getblockchaininfo",
-        params: [],
-      }),
-    });
-
+    const response = await fetch("http://localhost:3001/rpc", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ jsonrpc: "1.0", id: "getblockchaininfo", method: "getblockchaininfo", params: [] })
+});
     const data = await response.json();
     if (data.error) return res.status(500).json({ error: data.error });
 
