@@ -201,7 +201,7 @@ window.addEventListener("DOMContentLoaded", loadBitcoinStats);
 
 async function checkAsicConnection() {
   try {
-    const res = await fetch("http://localhost:5050/asic-status");
+    const res = await fetch("/api/asic-status");
     const data = await res.json();
     const el = document.getElementById("asic-status");
     if (data.connected) {

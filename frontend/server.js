@@ -81,6 +81,16 @@ app.get("/api/mempool", async (req, res) => {
   }
 });
 
+app.get("/api/asic-status", async (req, res) => {
+  try {
+    const response = await fetch("http://127.0.0.1:5050/asic-status");
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ connected: false, error: "Не удалось получить статус ASIC" });
+  }
+});
+
 
 app.get("/api/user-count", (req, res) => {
   try {
