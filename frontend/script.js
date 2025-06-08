@@ -229,24 +229,24 @@ document.addEventListener('DOMContentLoaded', fetchBlockchainInfo);
 
 
 
-// async function checkAsicConnection() {
-//   try {
-//     const res = await fetch("http://localhost:5050/asic-status");
-//     const data = await res.json();
-//     const el = document.getElementById("asic-status");
-//     if (data.connected) {
-//       el.textContent = "ASIC подключен ✅";
-//       el.classList.remove("text-red-500");
-//       el.classList.add("text-green-500");
-//     } else {
-//       el.textContent = "ASIC не подключен ❌";
-//       el.classList.remove("text-green-500");
-//       el.classList.add("text-red-500");
-//     }
-//   } catch (err) {
-//     console.error("Ошибка проверки ASIC:", err);
-//   }
-// }
+async function checkAsicConnection() {
+  try {
+    const res = await fetch("http://localhost:5050/asic-status");
+    const data = await res.json();
+    const el = document.getElementById("asic-status");
+    if (data.connected) {
+      el.textContent = "ASIC подключен ✅";
+      el.classList.remove("text-red-500");
+      el.classList.add("text-green-500");
+    } else {
+      el.textContent = "ASIC не подключен ❌";
+      el.classList.remove("text-green-500");
+      el.classList.add("text-red-500");
+    }
+  } catch (err) {
+    console.error("Ошибка проверки ASIC:", err);
+  }
+}
 
-// setInterval(checkAsicConnection, 5000); // обновление каждые 5 секунд
-// window.addEventListener("DOMContentLoaded", checkAsicConnection);
+setInterval(checkAsicConnection, 5000); // обновление каждые 5 секунд
+window.addEventListener("DOMContentLoaded", checkAsicConnection);
