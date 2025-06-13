@@ -1,4 +1,4 @@
-// Stratum-сервер с детальной отладкой для ASIC
+// Stratum-сервер с логгером соединений для ASIC BM1368
 const net = require("net");
 const fs = require("fs");
 const http = require("http");
@@ -11,10 +11,18 @@ const RPC_PASSWORD = "yT8mKp9QfV";
 const RPC_PORT = 8332;
 const RPC_HOST = "127.0.0.1";
 const STATIC_WALLET = "bc1qrpq9w04k09rjjz283f2gzul3ga06mdn3tngt8r";
+const LOG_FILE = "/opt/MyServer/asic-log.txt";
 
 let connectedWallet = null;
 let lastJobId = 0;
 let currentJob = null;
+
+function logEvent(text) {
+  const timestamp = new Date().toISOString();
+  const entry = `[${timestamp}] ${text}\n`;
+  fs.appendFileSync(LOG_FILE, entry);
+  console.log(entry.trim());
+}
 
 function rpcCall(method, params = [], callback) {
   const options = {
@@ -42,20 +50,20 @@ function broadcastJob(socket, job) {
     method: "mining.notify",
     params: [job.job_id, job.prevblock, job.coinb1, job.coinb2, job.merkleroot, job.version, job.bits, job.time, job.clean]
   };
-  console.log("📤 Отправляем задание майнеру:", JSON.stringify(notify));
+  logEvent("📤 Отправляем задание майнеру: " + JSON.stringify(notify));
   socket.write(JSON.stringify(notify) + "\n");
 }
 
 const server = net.createServer((socket) => {
-  console.log("🔌 ASIC подключился:", socket.remoteAddress);
+  logEvent("🔌 ASIC подключился: " + socket.remoteAddress);
 
   socket.on("data", (data) => {
     try {
-      console.log("📥 Получено от ASIC:", data.toString());
+      logEvent("📥 Получено от ASIC: " + data.toString());
       const message = JSON.parse(data.toString());
 
       if (message.method === "mining.subscribe") {
-        console.log("🔄 Обработка subscribe запроса");
+        logEvent("🔄 Обработка subscribe запроса");
         socket.write(JSON.stringify({
           id: message.id,
           result: [["mining.set_difficulty", "deadbeef"], ["mining.notify", "deadbeef"]],
@@ -64,7 +72,7 @@ const server = net.createServer((socket) => {
       }
 
       if (message.method === "mining.authorize") {
-        console.log("🔑 Поступил authorize-запрос:", message.params);
+        logEvent("🔑 Поступил authorize-запрос: " + JSON.stringify(message.params));
         const [wallet, password] = message.params;
 
         const userLines = fs.readFileSync(USERS_FILE, "utf8").split("\n");
@@ -75,7 +83,7 @@ const server = net.createServer((socket) => {
 
         if (found) {
           connectedWallet = wallet;
-          console.log(`✅ ASIC авторизован: Wallet ${wallet}`);
+          logEvent(`✅ ASIC авторизован: Wallet ${wallet}`);
           socket.write(JSON.stringify({ id: message.id, result: true, error: null }) + "\n");
 
           rpcCall("getblocktemplate", [{"rules": ["segwit"]}], (err, res) => {
@@ -92,45 +100,45 @@ const server = net.createServer((socket) => {
               currentJob = job;
               broadcastJob(socket, job);
             } else {
-              console.error("❌ Ошибка getblocktemplate:", err || res.error);
+              logEvent("❌ Ошибка getblocktemplate: " + (err || res.error));
             }
           });
 
         } else {
-          console.warn("❌ Ошибка авторизации: пользователь не найден или неверные данные");
+          logEvent("❌ Ошибка авторизации: пользователь не найден или неверные данные");
           socket.write(JSON.stringify({ id: message.id, result: false, error: "Auth failed" }) + "\n");
         }
       }
 
       if (message.method === "mining.submit") {
-        console.log("🧱 ASIC прислал решение:", JSON.stringify(message.params));
+        logEvent("🧱 ASIC прислал решение: " + JSON.stringify(message.params));
         rpcCall("submitblock", [message.params[1]], (err, res) => {
           if (err || res.error) {
-            console.log("❌ submitblock ошибка", err || res.error);
+            logEvent("❌ submitblock ошибка: " + (err || res.error));
           } else {
-            console.log("🎉 Блок принят! Вознаграждение в кошелек", STATIC_WALLET);
+            logEvent("🎉 Блок принят! Вознаграждение в кошелек: " + STATIC_WALLET);
           }
         });
         socket.write(JSON.stringify({ id: message.id, result: true, error: null }) + "\n");
       }
 
     } catch (e) {
-      console.error("❌ Ошибка парсинга JSON от ASIC:", e.message);
+      logEvent("❌ Ошибка парсинга JSON от ASIC: " + e.message);
     }
   });
 
   socket.on("end", () => {
-    console.log("🔌 Отключение ASIC");
+    logEvent("🔌 Отключение ASIC");
     connectedWallet = null;
   });
 });
 
 server.listen(PORT, () => {
-  console.log(`✅ Stratum-сервер слушает порт ${PORT}`);
+  logEvent(`✅ Stratum-сервер слушает порт ${PORT}`);
 });
 
 server.on("error", (err) => {
-  console.error(`❌ Ошибка сервера: ${err.message}`);
+  logEvent(`❌ Ошибка сервера: ${err.message}`);
 });
 
 const statusServer = http.createServer((req, res) => {
@@ -141,5 +149,5 @@ const statusServer = http.createServer((req, res) => {
 });
 
 statusServer.listen(5050, () => {
-  console.log("🌐 HTTP статус сервер слушает порт 5050");
+  logEvent("🌐 HTTP статус сервер слушает порт 5050");
 });
