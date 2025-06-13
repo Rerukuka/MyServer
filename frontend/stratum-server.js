@@ -1,7 +1,6 @@
-// Stratum-сервер с логгером соединений для ASIC BM1368
+// Stratum-сервер для ASIC BM1368 на порту 3333 (без 5050)
 const net = require("net");
 const fs = require("fs");
-const http = require("http");
 const httpClient = require("http");
 
 const PORT = 3333;
@@ -139,15 +138,4 @@ server.listen(PORT, () => {
 
 server.on("error", (err) => {
   logEvent(`❌ Ошибка сервера: ${err.message}`);
-});
-
-const statusServer = http.createServer((req, res) => {
-  if (req.url === "/asic-status") {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ connected: !!connectedWallet, connectedWallet }));
-  }
-});
-
-statusServer.listen(5050, () => {
-  logEvent("🌐 HTTP статус сервер слушает порт 5050");
 });
