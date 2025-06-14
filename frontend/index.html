@@ -12,20 +12,19 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <div class="flex flex-col leading-tight">
-  <a href="index.html" class="text-2xl font-bold text-blue-600 dark:text-blue-400" data-i18n="site-name">BtcAIworK</a>
-  <span id="btc-wallet-display" class="text-xs text-gray-500 dark:text-gray-300"></span>
-</div>
-
+          <a href="index.html" class="text-2xl font-bold text-blue-600 dark:text-blue-400" data-i18n="site-name">BtcAIworK</a>
+          <span id="btc-wallet-display" class="text-xs text-gray-500 dark:text-gray-300"></span>
+        </div>
         <div class="nav-links flex items-center space-x-4">
-          <a href="index.html" class="btn-nav active">Главная</a>
-          <a href="dashboard.html" class="btn-nav">Статистика</a>
-          <a href="Roadmap.html" class="btn-nav">Дорожная карта</a>
-          <a href="Conect.html" class="btn-nav">Контакты</a>
+          <a href="index.html" class="btn-nav active" data-i18n="nav-index">Главная</a>
+          <a href="dashboard.html" class="btn-nav" data-i18n="nav-dashboard">Статистика</a>
+          <a href="Roadmap.html" class="btn-nav" data-i18n="nav-roadmap">Дорожная карта</a>
+          <a href="Conect.html" class="btn-nav" data-i18n="nav-connection">Контакты</a>
           <a href="Profile.html" id="profile-link" class="btn-nav hidden" data-i18n="nav-profile">Аккаунт</a>
           <a href="Login.html" id="login-link" class="btn-nav" data-i18n="nav-login">Вход</a>
           <button id="theme-toggle" class="btn-nav">🌙</button>
           <button id="lang-btn" class="btn-nav">RU</button>
-        </div>  
+        </div>
       </div>
     </div>
   </nav>
@@ -49,14 +48,12 @@
       <p class="mb-4" data-i18n="new-gen-mining">— это твой шанс зайти в соло-майнинг на старте нового поколения.</p>
       <p class="mb-4" data-i18n="no-middlemen">Здесь нет посредников. Нет скрытых комиссий. Только ты, твой майнер и умный AI, который работает на твой доход 24/7.</p>
       <p class="mb-6 font-semibold" data-i18n="ready-to-earn">Готов получать больше от Биткойна?</p>
-<div id="btc-stats" class="mt-6">
-  <p id="btc-blocks">Блоков: ...</p>
-  <p id="btc-difficulty">Сложность: ...</p>
-</div>
-
+      <div id="btc-stats" class="mt-6">
+        <p id="btc-blocks">Блоков: ...</p>
+        <p id="btc-difficulty">Сложность: ...</p>
+      </div>
       <a href="Register.html" class="btn-primary bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold px-6 py-3 rounded-md hover:from-blue-600 hover:to-blue-800 transition" data-i18n="home-get-started">Начать сейчас</a>
     </div>
-    
   </main>
 
   <footer class="bg-white dark:bg-gray-800 py-6 shadow-inner">
@@ -66,6 +63,6 @@
   </footer>
 
   <script src="i18n.js"></script>
-<script type="module" src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
