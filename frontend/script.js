@@ -19,7 +19,7 @@ themeToggleBtn?.addEventListener("click", () => {
 window.addEventListener("DOMContentLoaded", updateTheme);
 
 // 🌐 Перевод
-let currentLang = "RU";
+let currentLang = "ru";
 const langBtn = document.getElementById("lang-btn");
 function updateTranslations() {
   document.querySelectorAll("[data-i18n]").forEach(el => {
